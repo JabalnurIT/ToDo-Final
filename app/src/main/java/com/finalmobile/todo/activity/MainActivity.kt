@@ -3,6 +3,7 @@ package com.finalmobile.todo.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
@@ -42,6 +43,57 @@ class MainActivity : AppCompatActivity() {
         floatingActionButton.setOnClickListener {
             addList()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.sort_ls -> sortList()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    private fun sortList(){
+        val items = arrayOf("Tenggat Waktu", "Waktu Dibuat")
+
+        val builder = AlertDialog.Builder(this)
+        val alert = AlertDialog.Builder(this)
+        builder.setTitle("Urut Berdasarkan ...")
+            .setItems(items){dialog, which ->
+                when(which){
+                    0 -> {
+                        alert.setTitle(items[which])
+                            .setPositiveButton("Terdekat"){dialog, _ ->
+                                toDoViewModel.getLists()?.observe(this, Observer {
+                                    toDoListAdapter.setLists(it)
+                                })
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton("Terjauh"){dialog, _ ->
+                                toDoViewModel.sortByDueDateDescending()?.observe(this, Observer {
+                                    toDoListAdapter.setLists(it)
+                                })
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                    1 -> {
+                        alert.setTitle(items[which])
+                            .setPositiveButton("Terlama"){dialog, _ ->
+                                toDoViewModel.sortByCreatedDateAscending()?.observe(this, Observer {
+                                    toDoListAdapter.setLists(it)
+                                })
+                                dialog.dismiss()
+                            }
+                            .setNegativeButton("Terbaru"){dialog, _ ->
+                                toDoViewModel.sortByCreatedDateDescending()?.observe(this, Observer {
+                                    toDoListAdapter.setLists(it)
+                                })
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                }
+            }
+        builder.show()
     }
 
     private fun addList(){
