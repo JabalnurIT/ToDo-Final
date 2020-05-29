@@ -3,6 +3,7 @@ package com.finalmobile.todo.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         builder.setItems(items){ dialog, which ->
             when(which){
                 0 -> {
-                    //list
+                    listDetails(alert, toDo)
                 }
                 1 -> {
                     updateList(toDo)
@@ -76,6 +77,26 @@ class MainActivity : AppCompatActivity() {
             }
         }
         builder.show()
+    }
+    private fun listDetails(alert: AlertDialog.Builder, toDo: ToDo){
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.item_detail, null)
+
+        val title: TextView = dialogView.findViewById(R.id.title)
+        val createdDate: TextView = dialogView.findViewById(R.id.created_date_content)
+        val dueTime: TextView = dialogView.findViewById(R.id.due_time_content)
+        val note: TextView = dialogView.findViewById(R.id.desc_content)
+
+        title.text = toDo.title
+        createdDate.text = toDo.strCreatedDate
+        dueTime.text = "${toDo.strDueDate}, ${toDo.strDueHour}"
+        note.text = toDo.note
+
+        alert.setView(dialogView)
+            .setNeutralButton("Kembali"){dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
     private fun updateList(toDo: ToDo){
         val addIntent = Intent(this, UpdateActivity::class.java)
