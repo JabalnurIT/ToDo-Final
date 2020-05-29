@@ -26,6 +26,11 @@ class MainActivity : AppCompatActivity() {
 
         floatingActionButton = findViewById(R.id.fab)
 
+        rv_notes.layoutManager = LinearLayoutManager(this)
+        toDoListAdapter =
+            ToDoAdapter(this) { toDoList, i ->
+                showAlertMenu(toDoList)
+            }
         rv_notes.adapter = toDoListAdapter
 
         toDoViewModel = ViewModelProvider(this).get(ToDoViewModel::class.java)
