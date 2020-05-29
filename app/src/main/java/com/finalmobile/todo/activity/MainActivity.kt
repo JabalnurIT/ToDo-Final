@@ -4,16 +4,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.finalmobile.todo.R
+import com.finalmobile.todo.adpater.ToDoAdapter
 import com.finalmobile.todo.database.ToDo
 import com.finalmobile.todo.viewmodel.ToDoViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var toDoViewModel: ToDoViewModel
-
+    private lateinit var toDoListAdapter: ToDoAdapter
     private lateinit var floatingActionButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +26,12 @@ class MainActivity : AppCompatActivity() {
 
         floatingActionButton = findViewById(R.id.fab)
 
+        rv_notes.adapter = toDoListAdapter
+
         toDoViewModel = ViewModelProvider(this).get(ToDoViewModel::class.java)
+        toDoViewModel.getLists()?.observe(this, Observer {
+            toDoListAdapter.setLists(it)
+        })
 
         floatingActionButton.setOnClickListener {
             addList()
