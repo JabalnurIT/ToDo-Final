@@ -1,12 +1,13 @@
-package com.finalmobile.todo
+package com.finalmobile.todo.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.finalmobile.todo.R
 
-class UpdateActivity : AppCompatActivity() {
+class AddActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_update)
+        setContentView(R.layout.activity_add)
     }
 }
