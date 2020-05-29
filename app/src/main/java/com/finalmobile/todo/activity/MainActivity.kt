@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     //list
                 }
                 1 -> {
-                    //Update
+                    updateList(toDo)
                 }
                 2 -> {
                     alert.setTitle("Hapus Tugas?")
@@ -76,5 +76,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         builder.show()
+    }
+    private fun updateList(toDo: ToDo){
+        val addIntent = Intent(this, UpdateActivity::class.java)
+            .putExtra("EXTRA_LIST", toDo)
+            .putExtra(UpdateActivity.EXTRA_TITLE_UPDATE, toDo.title)
+            .putExtra(UpdateActivity.EXTRA_DATE_UPDATE, toDo.strDueDate)
+            .putExtra(UpdateActivity.EXTRA_TIME_UPDATE, toDo.strDueHour)
+            .putExtra(UpdateActivity.EXTRA_NOTE_UPDATE, toDo.note)
+            .putExtra(UpdateActivity.EXTRA_IS_FINISHED_UPDATE, toDo.isFinished)
+        startActivity(addIntent)
     }
 }
