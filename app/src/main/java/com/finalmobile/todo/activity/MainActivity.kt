@@ -3,6 +3,7 @@ package com.finalmobile.todo.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -45,12 +46,60 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+
+        searchList(menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.sort_ls -> sortList()
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun addList(){
+        val addIntent = Intent(this, AddActivity::class.java)
+        startActivity(addIntent)
+    }
+
+    private fun searchList(menu: Menu?){
+        val item = menu?.findItem(R.id.search_ls)
+
+        val searchView = item?.actionView as androidx.appcompat.widget.SearchView?
+        searchView?.isSubmitButtonEnabled = true
+
+        searchView?.setOnQueryTextListener(
+            object: androidx.appcompat.widget.SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    if(query != null){
+                        getItemsFromDb(query)
+                    }
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if(newText != null){
+                        getItemsFromDb(newText)
+                    }
+                    return true
+                }
+            }
+        )
+    }
+
+    private fun getItemsFromDb(searchText: String){
+        var searchText = searchText
+        searchText = "%$searchText%"
+
+        toDoViewModel.searchResult(searchText)?.observe(this, Observer {
+            toDoListAdapter.setLists(it)
+        })
+    }
+
     private fun sortList(){
         val items = arrayOf("Tenggat Waktu", "Waktu Dibuat")
 
@@ -94,11 +143,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         builder.show()
-    }
-
-    private fun addList(){
-        val addIntent = Intent(this, AddActivity::class.java)
-        startActivity(addIntent)
     }
 
     private fun showAlertMenu(toDo: ToDo){
