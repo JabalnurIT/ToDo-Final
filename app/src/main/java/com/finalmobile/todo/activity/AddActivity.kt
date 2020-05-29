@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.finalmobile.todo.Converter
@@ -94,25 +95,37 @@ class AddActivity : AppCompatActivity() {
         val strCreatedDate = current.format(formatter)
         val createdDate = Converter.dateToInt(current)
         val strDueDate = editTextDate.text.toString().trim()
-        val dueDate = Converter.stringDateToInt(strDueDate)
         val strDueHour = editTextTime.text.toString().trim()
-        val dueHour= Converter.stringTimeToInt(strDueHour)
         val title = editTextTitle.text.toString().trim()
         val note = editTextNote.text.toString().trim()
-
-        toDoViewModel.insertList(
-            ToDo(
-                createdDate = createdDate,
-                strCreatedDate = strCreatedDate,
-                title = title,
-                dueDate = dueDate,
-                dueHour = dueHour,
-                strDueDate = strDueDate,
-                strDueHour = strDueHour,
-                note = note,
-                isFinished = false
+        if (title.isEmpty()) {
+            toast("Judul Tidak Boleh Kosong", Toast.LENGTH_LONG)
+        } else if (note.isEmpty()) {
+            toast("Deskripsi Tidak Boleh Kosong", Toast.LENGTH_LONG)
+        } else if (strDueDate.isEmpty()) {
+            toast("Tanggal Tidak Boleh Kosong", Toast.LENGTH_LONG)
+        } else if (strDueHour.isEmpty()) {
+            toast("Waktu Tidak Boleh Kosong", Toast.LENGTH_LONG)
+        } else {
+            val dueDate = Converter.stringDateToInt(strDueDate)
+            val dueHour = Converter.stringTimeToInt(strDueHour)
+            toDoViewModel.insertList(
+                ToDo(
+                    createdDate = createdDate,
+                    strCreatedDate = strCreatedDate,
+                    title = title,
+                    dueDate = dueDate,
+                    dueHour = dueHour,
+                    strDueDate = strDueDate,
+                    strDueHour = strDueHour,
+                    note = note,
+                    isFinished = false
+                )
             )
-        )
-        finish()
+            finish()
+        }
+    }
+    private fun toast(message : String, length: Int = Toast.LENGTH_LONG){
+        Toast.makeText(this,message,length).show()
     }
 }
