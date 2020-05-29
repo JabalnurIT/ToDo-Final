@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">ToDo</string>
+    <string name="add">Tambahkan</string>
+    <string name="title_list">Judul</string>
+    <string name="due_date">Tenggat Tanggal</string>
+    <string name="add_title">Tambah Tugas</string>
+    <string name="save">Simpan</string>
+    <string name="update_title">Update Tugas</string>
+    <string name="update">Perbarui</string>
+    <string name="cancel">Batal</string>
+    <string name="task_finished">Tugas Selesai?</string>
+    <string name="date_not_set">Tanggal Belum Diatur</string>
+    <string name="time_not_set">Waktu Belum Diatur</string>
+    <string name="due_time">Tenggat Waktu</string>
+    <string name="comma">,\u0020</string>
+    <string name="sort">Sort</string>
+    <string name="search">Search</string>
+    <string name="created_date">Waktu Dibuat:\u0020</string>
+    <string name="created_date_content">Waktu</string>
+    <string name="due_time_content">Tenggat Waktu</string>
+    <string name="due_time_u0020">Tenggat:\u0020</string>
+    <string name="description_u0020">Deskripsi:\u0020</string>
+    <string name="description">"Deskripsi"</string>
+    <string name="tambah_tugas">Tambah Tugas</string>
+    <string name="pebarui_tugas">Perbarui Tugas</string>
 </resources>
